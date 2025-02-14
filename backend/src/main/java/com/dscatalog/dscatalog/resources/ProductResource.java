@@ -43,7 +43,8 @@ public class ProductResource {
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO dto){
         dto = service.create(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(dto);
+
     }
 
     @PutMapping(value = "/{id}")
