@@ -1,4 +1,4 @@
-package com.dscatalog.dscatalog.repository;
+package com.dscatalog.dscatalog.repositories;
 
 import com.dscatalog.dscatalog.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
