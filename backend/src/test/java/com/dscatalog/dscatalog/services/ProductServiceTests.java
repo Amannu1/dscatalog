@@ -28,14 +28,25 @@ public class ProductServiceTests {
         existingId = 1L;
         nonExistingId = 1000L;
 
+        Mockito.when(repository.existsById(existingId)).thenReturn(true);
+        Mockito.when(repository.existsById(nonExistingId)).thenReturn(false);
         Mockito.doNothing().when(repository).deleteById(existingId);
+    }
+
+    @Test
+    public void deleteShouldThrowResourceNotFoundWhenIdDoesNotExist() {
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+           service.delete(nonExistingId);
+        });
     }
 
     @Test
     public void deleteShouldDoNothingWhenIdExists() {
 
-        Assertions.assertThrows(ResourceNotFoundException.class,() -> {
-            service.delete(nonExistingId);
+        Assertions.assertDoesNotThrow(() -> {
+            service.delete(existingId);
         });
+        Mockito.verify(repository, Mockito.times(1)).deleteById(existingId);
     }
 }
