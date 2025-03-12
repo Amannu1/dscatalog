@@ -92,8 +92,6 @@ public class ProductServiceTests {
     @Test
     public void updateShouldReturnProductDTOWhenIdExists() {
 
-        ProductDTO dto = Factory.createProductDTO();
-
         ProductDTO result = service.update(existingId, productDTO);
 
         Assertions.assertNotNull(result);
