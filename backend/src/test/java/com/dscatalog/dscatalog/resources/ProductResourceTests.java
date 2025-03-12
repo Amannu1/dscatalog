@@ -18,12 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.print.attribute.standard.Media;
+import javax.xml.transform.Result;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +52,7 @@ public class ProductResourceTests {
         existingId = 1L;
         nonExistingId = 2L;
         dependentId = 3L;
+        productDTO = Factory.createProductDTO();
 
         productDTO = Factory.createProductDTO();
         page = new PageImpl<>(List.of(productDTO));
@@ -67,6 +68,43 @@ public class ProductResourceTests {
         Mockito.doNothing().when(service).delete(existingId);
         Mockito.doThrow(ResourceNotFoundException.class).when(service).delete(nonExistingId);
         Mockito.doThrow(DatabaseException.class).when(service).delete(dependentId);
+
+        Mockito.when(service.create(any())).thenReturn(productDTO);
+    }
+
+    @Test
+    public void deleteShouldReturnNoContentWhenIdExist() throws Exception{
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", existingId)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void deleteShouldReturnNotFoundWhenIdDoesNotExists() throws Exception{
+
+        ResultActions result = mockMvc.perform(delete("/products/{id}", nonExistingId)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void insertShouldReturnCreatedAndProductDTO() throws Exception{
+
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions result = mockMvc.perform(post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+
+        result.andExpect(status().isCreated());
+        result.andExpect(jsonPath("$.id").exists());
+        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.description").exists());
     }
 
     @Test
@@ -82,8 +120,8 @@ public class ProductResourceTests {
 
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath(".name").exists());
-        result.andExpect(jsonPath(".description").exists());
+        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.description").exists());
     }
 
     @Test
@@ -103,8 +141,7 @@ public class ProductResourceTests {
     @Test
     public void findAllShouldReturnPage() throws Exception {
 
-        ResultActions result =
-                mockMvc.perform(get("/products")
+        ResultActions result = mockMvc.perform(get("/products")
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
@@ -113,8 +150,7 @@ public class ProductResourceTests {
     @Test
     public void findByIdShouldReturnProductWhenIdExists() throws Exception{
 
-        ResultActions result =
-                mockMvc.perform(get("/products/{id}", existingId)
+        ResultActions result = mockMvc.perform(get("/products/{id}", existingId)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
@@ -126,8 +162,7 @@ public class ProductResourceTests {
     @Test
     public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception{
 
-        ResultActions result =
-                mockMvc.perform(get("/products/{id}", nonExistingId)
+        ResultActions result = mockMvc.perform(get("/products/{id}", nonExistingId)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNotFound());
