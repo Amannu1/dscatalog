@@ -73,7 +73,7 @@ public class ProductResourceTests {
     }
 
     @Test
-    public void deleteShouldReturnNoContentWhenIdExist() throws Exception{
+    public void deleteShouldReturnNoContentWhenIdExists() throws Exception{
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", existingId)
                 .accept(MediaType.APPLICATION_JSON));
@@ -82,7 +82,7 @@ public class ProductResourceTests {
     }
 
     @Test
-    public void deleteShouldReturnNotFoundWhenIdDoesNotExists() throws Exception{
+    public void deleteShouldReturnNotFoundWhenIdDoesNotExist() throws Exception{
 
         ResultActions result = mockMvc.perform(delete("/products/{id}", nonExistingId)
                 .accept(MediaType.APPLICATION_JSON));
