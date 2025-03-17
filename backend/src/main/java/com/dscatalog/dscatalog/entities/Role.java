@@ -1,19 +1,26 @@
 package com.dscatalog.dscatalog.entities;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_role")
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long authority;
+
+    private String authority;
 
     public Role(){
 
     }
 
-    public Role(Long id, Long authority) {
+    public Role(Long id, String authority) {
         this.id = id;
         this.authority = authority;
     }
@@ -26,11 +33,11 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public Long getAuthority() {
+    public String getAuthority() {
         return authority;
     }
 
-    public void setAuthority(Long authority) {
+    public void setAuthority(String authority) {
         this.authority = authority;
     }
 
