@@ -82,7 +82,7 @@ public class ProductResourceIT {
         ProductDTO productDTO = Factory.createProductDTO();
         //Converts a java object into string
         String jsonBody = objectMapper.writeValueAsString(productDTO);
-        
+
         ResultActions result = mockMvc.perform(put("/products/{id}", nonExistingId)
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
