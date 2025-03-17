@@ -3,6 +3,7 @@ package com.dscatalog.dscatalog.resources;
 import com.dscatalog.dscatalog.dto.UserDTO;
 import com.dscatalog.dscatalog.dto.UserInsertDTO;
 import com.dscatalog.dscatalog.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserInsertDTO dto){
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserInsertDTO dto){
         UserDTO newDto = service.create(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDto.getId()).toUri();
         return ResponseEntity.created(uri).body(newDto);
@@ -41,7 +42,7 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO dto){
+    public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable Long id, @RequestBody UserDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
