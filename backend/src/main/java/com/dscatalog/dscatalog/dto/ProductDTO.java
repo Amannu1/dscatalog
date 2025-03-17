@@ -22,7 +22,9 @@ public class ProductDTO implements Serializable {
 
     private List<CategoryDTO> categories = new ArrayList<>();
 
-    public ProductDTO(){}
+    public ProductDTO(){
+
+    }
 
     public ProductDTO(Long id, Instant date, String imgUrl, Double price, String description, String name) {
         this.id = id;
