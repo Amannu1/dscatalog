@@ -95,6 +95,6 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductProjection> testQuery(Pageable pageable) {
-        return repository.searchProducts(Arrays.asList(1L, 3L), "ma", pageable);
+        return repository.searchProducts(Arrays.asList(), "", pageable);
     }
 }
