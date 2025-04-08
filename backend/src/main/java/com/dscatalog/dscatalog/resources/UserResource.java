@@ -37,7 +37,7 @@ public class UserResource {
         return ResponseEntity.ok().body(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserInsertDTO dto){
         UserDTO newDto = service.create(dto);
