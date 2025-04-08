@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.net.URI;
 
@@ -36,7 +38,6 @@ public class UserResource {
         UserDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
-
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserInsertDTO dto){
