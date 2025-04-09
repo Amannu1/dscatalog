@@ -80,7 +80,7 @@ public class AuthorizationServerConfig {
 		http
 				.csrf(csrf -> csrf.disable())
 				.with(authorizationServerConfigurer, Customizer.withDefaults());
-		
+
 		authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
 				tokenEndpoint
 						.accessTokenRequestConverter(new CustomPasswordAuthenticationConverter())
