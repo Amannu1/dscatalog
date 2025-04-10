@@ -1,6 +1,5 @@
 package com.dscatalog.dscatalog.services;
 
-import com.dscatalog.dscatalog.demo.dto.EmailDTO;
 import com.dscatalog.dscatalog.services.exceptions.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +17,13 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendEmail(EmailDTO obj) {
+    public void sendEmail(String to, String subject, String body) {
         try{
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(emailFrom);
-            message.setTo(obj.getTo());
-            message.setSubject(obj.getSubject());
-            message.setText(obj.getBody());
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
             emailSender.send(message);
         } 
         catch (MailException e){
