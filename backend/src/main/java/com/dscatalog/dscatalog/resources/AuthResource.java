@@ -4,6 +4,7 @@ import com.dscatalog.dscatalog.dto.EmailDTO;
 import com.dscatalog.dscatalog.dto.UserDTO;
 import com.dscatalog.dscatalog.dto.UserInsertDTO;
 import com.dscatalog.dscatalog.dto.UserUpdateDTO;
+import com.dscatalog.dscatalog.services.AuthService;
 import com.dscatalog.dscatalog.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,12 @@ import java.net.URI;
 @RequestMapping(value = "/auth")
 public class AuthResource {
 
-    @GetMapping
-    public ResponseEntity<Void> createRecoverToken(EmailDTO body){
-        Page<UserDTO> list = service.findAllPaged(pageable);
+    @Autowired
+    private AuthService service;
 
-        return ResponseEntity.ok().body(list);
+    @PostMapping(value = "/recover-token")
+    public ResponseEntity<Void> createRecoverToken(@Valid @RequestBody EmailDTO body){
+        service.createRecoverToken(body);
+        return ResponseEntity.noContent().build();
     }
-
 }

@@ -1,10 +1,12 @@
 package com.dscatalog.dscatalog.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class EmailDTO {
 
+    
     @NotBlank(message = "Required field.")
     @Email(message = "Invalid Email.")
     private String email;
